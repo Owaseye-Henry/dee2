@@ -1,0 +1,13 @@
+Edit User 
+<form action="/editUser/<%=user._id%>?_method=PUT" method="post">
+    <input type="text" name="Firstname" placeholder="First name" value="<%=user.Firstname%>"> <br>
+    <input type="text" name="Surname" placeholder="Surname" value="<%=user.Surname%>"> <br>
+    <input type="text" name="Phoneno" placeholder="Phone number" value="<%=user.Phoneno%>"><br>
+    <input type="text" name="Username" placeholder="username" value="<%=user.Username%>"><br>
+    <input type="email" name="Email" placeholder="email" value="<%=user.Email%>"><br>
+    <input type="text" name="Password1" placeholder="new password"><br>
+    <input type="text" name="Password2" placeholder="re-enter password"><br>
+    <button type="submit">submit</button>
+    <br>
+    <a href="/login">login</a>
+</form>

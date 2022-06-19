@@ -1,0 +1,43 @@
+<%-include('login-register-header')%>
+<style>
+    
+    .login-container{
+        margin: auto;
+        width:40%;
+        border-radius: 5px;
+        box-shadow: 2px 3px 10px ;
+        background-color: white;
+    }
+    .btn-purple{
+        background-color: purple;
+        color: white;
+    }
+    .login-form{
+        width: 100%;
+    }
+    .login-form form{
+        width: 80%;
+        margin: auto;
+        padding: 1.5rem;
+    }
+</style>
+<div class="login-container major-div">
+    <h1 class="sh-1">Please login</h1> 
+    <%if(message){%>
+        <p style="color: red;"><%=message%></p>
+    <%}%>
+    <div class="login-form minor-div">
+      
+        <form class="form-group" action="<%=url%>" method="post">
+            <input class="form-control" type="text" name="Username" placeholder="Username"><br>
+            <input class="form-control" type="password" name="Password" placeholder="Password"><br>
+            <button class="btn btn-lg btn-purple form-control" type="submit">login</button>
+        </form>
+        <br>
+        <a href="<%=signup%>">signup</a>
+    </div>
+</div>
+
+
+
+<%-include('footer')%>

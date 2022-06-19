@@ -1,0 +1,62 @@
+<%-include("header")%>
+  <style>
+      img{
+          width: 500px;
+          height:500px ;
+          
+      }
+      .grid{
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+      }
+      @media(max-width:900px){
+        .flex-box{
+          flex-wrap: wrap;
+      }
+
+    
+      }
+      .sh-2{
+          color: purple;
+        }
+
+      .image{
+          margin-right: 2rem;
+      }
+      .details{
+          text-align: left;
+          width: 100%;
+          
+      }
+  </style>
+ <div class="wrapper flex-box">
+     <%if(item){%>
+        <div class="image">
+            <img src="<%=item.image%>" alt="images">
+        </div>
+        <div class="details">
+            <h1 class="name sh-2"><%=item.itemName%> </h1>
+   
+            <h2 style="color: red;">N <%=item.price%></h2>
+            <p class="qty"><span style="color:purple; font-weight: 600;"><%=item.AvailableQuantity%></span> Available</p>
+            <p class="description"><%=item.description%></p>
+   
+                 <form action="/customers/cart-add/<%=item._id%>" method="post">
+                   
+                   <input type="number" name="quantity" id="quantity" placeholder="quantity">
+                   <br>
+                   <br>
+                   <button type="submit" class="btn btn-warning">add to cart <i class="fa fa-shopping-cart"></i></button>
+               </form>     
+   
+        </div>
+     <%}%>
+    
+ </div>
+
+    <script>
+
+        
+      
+    </script>
+<%-include("footer")%>

@@ -1,0 +1,172 @@
+<%-include('market-header')%>
+
+<style>
+    .items-card{
+           width: 200px;
+           height: fit-content;
+           box-shadow: -1px 2px 5px  ;
+       }
+
+       .items-card img{
+           max-width: 100%;
+           height:200px;
+       }
+
+       .info{
+           color:purple;
+           font-weight: 600;
+       }
+
+       @media(max-width:900px){
+    
+        .grid{
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .items-card{
+            width: 100%;
+        }
+
+
+    }
+
+
+    @media(max-width:600px){
+        .grid{
+            grid-template-columns: repeat(1,1fr);
+        }
+
+        .items-card{
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="market major-div">
+    <h1 class="sh-1">Shop</h1>
+    <div class="shop-message">
+
+    </div>
+    <div class="market-items grid">
+        <!-- allItems.forEach -->
+        <%if(allItems){%>
+            <%allItems.forEach((eachItem)=>{%>
+                <%if(eachItem.quantity > 0){%>
+                    <!-- individual item cards that are available-->
+                    <a href="/customers/item/<%=eachItem._id%>">
+                        <div class="items-card">
+                            <img src="<%=eachItem.image%>" alt="item-image">
+                            <ul>
+                                <li><span class="info"><!--name--></span><%=eachItem.name%></li>
+                                <li><span class="info"><!--name-->price: </span> <%=eachItem.price%> </li>
+                                <li><span class="info"><!--name-->Available quantity: </span><%=eachItem.quantity%></li>
+                
+                                <form action="/customers/cart-add/<%=eachItem._id%>" method="post">
+                    
+                                    <input type="number" name="quantity" id="quantity" placeholder="quantity">
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="btn btn-warning">add to cart <i class="fa fa-shopping-cart"></i></button>
+                                </form>              
+                
+                            </ul>
+                        </div>
+                    </a>
+                    
+                <%}%>
+                
+            <%})%>
+        <%}%>
+
+        
+
+        
+        
+    </div>
+</div>
+<nav class="pagination-wrapper">
+    <ul class="pagination">
+        <li class="page-item"><i class="page-link Previous">Previous</i></li>
+        <li class="page-item"><i class="page-link Next" >Next</i></li>
+      </ul>
+    </nav>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded",()=>{
+            
+
+            
+            const marketDiv = document.querySelector('.market-items')
+            const prev = document.querySelector(".Previous")
+            const next = document.querySelector(".Next")
+
+
+            function fetcher(pagenumber){
+                fetch(`http://localhost:3000/customers/market?page=${pagenumber}`)
+                .then(res=>res.json())
+                .then(data =>{
+                    let output = ``
+                    console.log(data)
+                    data.forEach(one=>{
+                        output += `
+                            <div class="items-card">
+                                <a href="/customers/item/${one._id}">
+                                <img src="${one.image}" alt="item-image">
+                                </a>
+                                <ul>
+                                    <li><span class="info"><!--name--></span>${one.itemName}</li>
+                                    <li><span class="info"><!--name-->price: </span> ${one.price} </li>
+                                    <li><span class="info"><!--name--> </span>${one.AvailableQuantity} left</li>
+                    
+                                    <form action="/customers/cart-add/${one._id}" method="post">
+                        
+                                        <input type="number" name="quantity" id="quantity" placeholder="how many?">
+                                        <br>
+                                        <br>
+                                        <button type="submit" class="btn btn-warning">add to cart <i class="fa fa-shopping-cart"></i></button>
+                                    </form>              
+                                    
+                                </ul>
+                            </div>
+                        `
+
+                            marketDiv.innerHTML = output
+                                
+                            
+                            
+                    })
+                            
+                })
+       
+       
+            }
+           
+            
+            let prv = 0;
+            let nxt = prv+2;
+        
+             console.log(nxt)
+            fetcher(1)
+
+            prev.onclick=()=>{
+                prv--
+                nxt--
+                fetcher(prv)
+            }
+          
+            next.onclick=()=>{
+                prv++
+                nxt++
+                fetcher(nxt)
+            }
+          
+
+            
+          console.log(prv,nxt)
+            
+        })
+    </script>
+<%-include('footer')%>
+

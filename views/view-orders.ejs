@@ -1,0 +1,67 @@
+<%-include('header')%>
+<style>
+    .details{
+        width:30%;
+
+    }
+
+    .item-grid{
+        width: 70%;
+        grid-template-columns: repeat(3,1fr);
+    }
+
+    .items-card{
+        text-align: left;
+        width: 250px;
+        box-shadow: 2px 2px 10px;
+        
+    }
+
+    .items-card img{
+        max-width: 100%;
+        height:200px;
+    }
+
+    .info{
+        color:purple;
+        font-weight: 600;
+    }
+
+    li{
+        margin-bottom: 1.5rem;
+    }
+    </style>
+
+<%if(orders){%>
+ <div class="details major-div">
+    <h1 class="sh-1">Your Orders</h1>
+ </div>
+<div class="major-div grid">
+     
+        <%orders.forEach(order =>{%>
+            <%for(let i = 0 ; i < order.products.length; i ++){%>
+
+                <div class="products">
+                    <!-- each products from orders -->
+                    <div class="card items-card">
+                        <%if(order.delivered){%>
+                            <h2 class="sh-2 btn btn-primary">delivered<i class="fa fa-check-circle"></i></h2>
+                        <%}else{%>
+                            <h2 class="sh-2 btn btn-secondary">delivery pending</h2>
+                        <%}%>
+                        <img src="<%=order.products[i].image%>" alt="product image">
+                        <li><span class="info">name:</span> <%=order.products[i].name%></li>
+                        <!-- get quantity from quantity array -->
+                        <li><span class="info">quantity:</span>  <%=order.quantity[i]%></li>
+            
+                    </div>
+                </div>
+            <%}%>
+        <%})%>
+    
+    
+  
+</div>
+<%}%>
+<%-include('footer')%>
+

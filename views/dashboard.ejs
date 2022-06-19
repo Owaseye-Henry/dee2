@@ -1,0 +1,203 @@
+<%-include("market2-header")%>
+    <style>
+        .rows{
+            margin:auto;
+        }
+
+        .info{
+            padding:1rem
+        }
+        
+        .card{
+            width: 200px;
+
+        }
+        .card img{
+            width: 100%;
+            height: 200px;
+            
+        }
+
+        .checkout-form form{
+            margin-left: 2rem ;
+            
+        }
+        @media(max-width:900px){
+    
+            .grid{
+                grid-template-columns: repeat(2,1fr);
+            }
+
+        
+         }
+
+
+        @media(max-width:600px){
+            .grid{
+                grid-template-columns: repeat(1,1fr);
+            }
+        }
+
+    </style>
+   
+ <h1 class="sh-1"> Cart <i class="fa fa-shopping-cart"></i> </h1>
+
+ <div class="checkout-form">
+    <form style="" action="/orders/make-order" method="post">
+        <textarea name="comments" id="" cols="25" rows="3" placeholder="enter extra details including delivery address"></textarea> <br>
+        <button type="submit" class="btn btn-warning">checkout</button>
+    </form>
+ </div>
+ <div class="container">
+    <div class="cart grid">
+
+    <!-- Ajax -->
+    </div>
+    <nav class="pagination-wrapper">
+        <ul class="pagination">
+            <li class="page-item"><i class="page-link Previous-cart">Previous</i></li>
+            <li class="page-item"><i class="page-link Next-cart" >Next</i></li>
+          </ul>
+        </nav>
+</div>
+
+<h1 class="sh-1">My Orders</h1>
+<div class="container">
+    <div class="order grid">
+
+        <!-- Ajax -->
+       
+   
+    </div>
+    <nav class="pagination-wrapper">
+        <ul class="pagination">
+            <li class="page-item"><i class="page-link Previous-order">Previous</i></li>
+            <li class="page-item"><i class="page-link Next-order" >Next</i></li>
+          </ul>
+        </nav>
+
+</div>
+
+    
+
+
+<script>
+    
+    
+   document.addEventListener("DOMContentLoaded",()=>{
+            
+
+            
+            const cart = document.querySelector('.cart')
+            const order = document.querySelector('.order')
+            const prevOrder = document.querySelector(".Previous-order")
+            const nextOrder = document.querySelector(".Next-order")
+            const prevCart = document.querySelector(".Previous-cart")
+            const nextCart = document.querySelector(".Next-cart")
+           
+
+            function fetcher1(pagenumber){
+                fetch(`http://localhost:3000/customers/dashboard?page=${pagenumber}`)
+                .then(res=>res.json())
+                .then(data =>{
+                    let output1 = ``
+                    let output2 = ``
+                    console.log(data.user.orders.length)
+                    for(let i = 0; i < data.user.cart.length; i ++ ){
+                        output1 += `
+    
+                            <div class="card">
+                                <a href="/customers/item/${data.user.cart[i]._id}">
+                                <img src=" ${data.user.cart[i].image}" alt="image">
+                                </a>
+                                <div class="info">
+                                <p class="name">${data.user.cart[i].itemName}</p> 
+                                <p class="price">#  ${data.user.cart[i].price}</p>
+                                <p class="quantity"> ${data.user.quantity[i]}</p>   
+                                <p><a href="/customers/cart-remove/${data.user.cart[i]._id}"><button class="btn  btn-danger">remove from cart</button></a></p>  
+                                        
+                                </div>
+                            </div>
+                        `                              
+                            
+                
+                        
+                    }
+
+                    
+                            
+                    
+                            cart.innerHTML = output1
+                            
+                })
+       
+       
+            }
+           
+            
+            function fetcher2(pagenumber){
+                fetch(`http://localhost:3000/customers/dashboard?page=${pagenumber}`)
+                .then(res=>res.json())
+                .then(data =>{
+                    let output1 = ``
+                    let output2 = ``
+                    
+                    
+                    for(let i = 0; i < data.user.orders.length; i ++ ){
+                        output2 += `<a href="/orders/get-single/${data.userorder[i]._id}">
+                        <div class="card">
+                            <p class="date">${data.user.orders[i].date}</p>
+                            <p class="price">${data.user.orders[i].price}</p>
+                            <p class="comments">${data.user.orders[i].comments}</p>
+                        </div>
+                    </a> `
+                    }
+                            
+                    
+                            
+                            order.innerHTML =output2
+                })
+       
+       
+            }
+           
+            
+            let prv1= 0;
+            let nxt1= prv1+2;
+            
+            let prv2= 0;
+            let nxt2= prv2+2;
+
+            fetcher1(1)
+            fetcher2(1)
+
+            prevCart.onclick=()=>{
+                prv1--
+                nxt1--
+                fetcher1(prv1)
+            }
+          
+            nextCart.onclick=()=>{
+                prv1++
+                nxt1++
+                fetcher1(nxt1)
+            }
+           
+
+            prevOrder.onclick=()=>{
+                prv2--
+                nxt2--
+                fetcher2(prv2)
+            }
+          
+            nextOrder.onclick=()=>{
+                prv2++
+                nxt2++
+                fetcher2(nxt2)
+            }
+            
+    
+            
+        })
+</script>
+<%-include("footer")%>

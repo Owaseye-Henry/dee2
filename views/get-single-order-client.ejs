@@ -1,0 +1,65 @@
+<%-include('market2-header')%>
+<style>
+    .details{
+        padding-left: 2rem;
+        margin-left: 2rem;
+    }
+
+    @media(max-width:900px){
+    .main.flex-box{
+            flex-direction: column;
+            
+        }
+
+        .grid{
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .info,.details{
+            margin:auto;
+        }
+    }
+
+
+    @media(max-width:600px){
+        .grid{
+            grid-template-columns: repeat(1,1fr);
+        }
+      .name,.quantity{
+          padding-left: .8rem;
+      }
+    }
+</style>
+<div class="main flex-box">
+    
+<%if(one.orderitems){%>
+    
+        <div class="info">
+            <p class="date"><%=one.date%></p>
+            <p class="price"># <%=one.price%></p>
+            <p class="comments"><%=one.comments%>s</p>
+            <p class="t-ref">transaction ref <%=one.transactionRef%></p>
+            <p class="t-id">transaction ID <%=one.transactionId%></p>
+    
+        </div>
+        <div class="details grid">
+        <%for(let i = 0 ; i < one.orderitems.length; i ++){%>
+        
+            <div class="card">
+              <img src="<%=one.orderitems[i].name%>" alt="items">
+              <p class="name"><%=one.orderitems[i].name%></p>
+              <p class="quantity"><%=one.quantity[i]%> ordered</p>
+            </div>
+             
+        
+   <%}%>
+        </div>
+<%}%>
+
+    
+    
+    
+
+
+</div>
+<%-include('footer')%>

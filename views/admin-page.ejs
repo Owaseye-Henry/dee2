@@ -1,0 +1,139 @@
+<%-include('admin-header')%>
+<style>
+    .card img{
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+    }
+    @media(max-width:900px){
+    
+    .grid{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+
+ }
+
+
+@media(max-width:600px){
+    .grid{
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+</style>
+<h1 class="sh-1">Admin Page</h1>
+
+<div class="major-div">
+    <h1 class="sh-2">upload items to store</h1>
+    <form action="/admin/create-product" class="form-group" enctype="multipart/form-data" method="post">
+        <input type="text" class="form-control" name="name" placeholder="enter product name">
+        <input type="number" class="form-control" name="price" placeholder="price">
+        <input type="file" class="form-control" name="image">
+        <input type="number" class="form-control" name="quantity" placeholder="quantity in mumbers">
+        <textarea name="description" class="form-control" cols="30" rows="10">enter description</textarea>
+
+        <button type="submit" class="btn btn-primary form-control" >Add to Store</button>
+    </form>
+</div> 
+
+<div class="minor-div gallery-form">
+ <h1 class="sh-2">upload images to gallery</h1>
+ <form action="/admin/gallery" class="form-group" method="post" enctype="multipart/form-data">
+    <input type="text" name="name" class="form-control" placeholder="image name">
+    <input type="text" class="form-control" name="description" placeholder="message (8 words max)">
+    <input type="file" name="image" class="form-control" placeholder="image">
+    <button type="submit" class="btn btn-primary form-control" >Add to Store</button>
+
+ </form>
+</div>
+
+<div class="major-div">
+ <h1 class="sh2">items list</h1>
+ <div class="card-container grid" id="card-container">
+        <%if(items){%>
+            <%items.forEach((item)=>{%>
+                
+        <div class="card">
+            <div>
+                <img src="<%=item.image%>" alt="<%=item.image%>">
+                <ul>
+                    <li class="name"><%=item.itemName%></li>
+                    <li class="price">price: #<%=item.price%></li>
+                    <li class="description">description: <%=item.description%></li>
+                    <li class="quantity"> quantity: <%=item.AvailableQuantity%></li>
+                </ul>
+                
+            </div>
+            <div>
+                <!-- edit button to connect to edit one  -->
+            <a href="/admin/editSingle/<%=item._id%>"><button class="btn btn-warning">edit <i class="fa fa-edit"></i></button></a> 
+
+                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">delete <i class="fa fa-trash"></i></button>
+
+                <!--delete modal -->
+                <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                <h1>Are you sure you want to <span style="color: red;">delete</span>?</h1>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form action="/admin/deleteSingle/<%=item._id%>?_method=DELETE" method="post" >
+                    <button type="submit" class="btn btn-danger">delete</button>
+                </form>
+                
+                </div>
+            </div>
+            </div>
+        </div>
+            </div>
+        </div>
+            <%})%>
+        <%}%>
+
+    
+
+            
+    
+        
+
+    </div>
+
+</div>
+
+<div class="major-div gallery">
+<h1 class="sh1">gallery</h1>
+    <div class="gallery-wrapper grid">
+        <%images.forEach(image=>{%>
+            <div class="card">
+            <a href="/admin/gallery-one/<%=image._id%>"><img src="<%=image.image%>" alt="<%=image.name%>"></a>
+            <p><%=image.name%></p>
+            <form action="/admin/gallery/<%=image._id%>?_method=DELETE" method="post" >
+            <button type="submit" class="btn btn-danger">delete <i class="fa fa-trash"></i></button>
+            </form>
+            
+            </div>
+        <%})%>
+
+        <div class="card">
+            <img src="/images/bg.jpg" alt="">
+            <p>image name</p>
+            <a href="#"><button class="btn btn-danger">delete <i class="fa fa-trash"></i></button></a>
+        </div>
+       
+    </div>
+   
+</div>
+<%-include('footer')%>
+
+

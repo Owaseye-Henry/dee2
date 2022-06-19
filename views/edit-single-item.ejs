@@ -1,0 +1,14 @@
+<%-include('admin-header')%>
+<div class="major-div">
+    <h1 class="sh-2">Edit item</h1>
+    <form action="/admin/editSingle/<%=single._id%>?_method=PUT" method="post" class="form-group">
+        <input type="text" class="form-control" name="name" placeholder="enter product name" value="<%=single.itemName%>">
+        <input type="number" class="form-control" name="price" placeholder="price" value="<%=single.price%>">
+        <input type="file" class="form-control" name="image">
+        <input type="number" class="form-control" name="quantity " placeholder="quantity in mumbers" value="<%=single.quantity%>">
+        <textarea name="description" class="form-control" cols="30" rows="10"><%=single.description%></textarea>
+
+        <button type="submit" class="btn btn-primary form-control" >update</button>
+    </form>
+</div> 
+<%-include('footer')%>

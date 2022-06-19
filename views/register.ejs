@@ -1,0 +1,58 @@
+
+
+<%-include('login-register-header')%>
+<style>
+    
+    .register-container{
+        margin: auto;
+        width:40%;
+        border-radius: 5px;
+        box-shadow: 2px 3px 10px ;
+        background-color: white;
+    }
+    .btn-purple{
+        background-color: purple;
+        color: white;
+    }
+    .register-form{
+        width: 100%;
+    }
+    .register-form form{
+        width: 80%;
+        margin: auto;
+        padding: 1.5rem;
+    }
+</style>
+<div class="register-container major-div">
+    <%if(url1 == "/auth/register"){%>
+    <h1 class="sh-1">Please signup</h1>
+    <%}else{%>
+        <h1 class="sh-1">Admin signup</h1>
+        <%}%>
+   
+    <div class="register-form minor-div">
+        <form action="<%=url1%>" method="post" class="form-group">
+            <input type="text" name="Firstname" class="form-control" placeholder="First name"> <br>
+            <input type="text" name="Surname" class="form-control"placeholder="Surname"> <br>
+          
+            <%if(url1 == "/auth/register"){%>
+                <input type="text" name="Phoneno" class="form-control"placeholder="Phone number"><br>
+                <input type="text" name="Address" id="" class="form-control" placeholder="address">
+            <%}%>
+            
+           
+            <input type="email" name="Email" class="form-control" placeholder="email"><br>
+            <input type="text" name="Username" class="form-control"placeholder="username"><br>
+            <input type="text" name="Password1" class="form-control" placeholder="password1"><br>
+            <input type="text" name="Password2" class="form-control" placeholder="password2"><br>
+            <button type="submit" class="btn btn-purple btn-lg">submit</button>
+            <br>
+            <a href="<%=url2%>">login</a>
+        
+        </form>
+    </div>
+</div>
+
+
+
+<%-include('footer')%>

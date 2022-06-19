@@ -1,0 +1,97 @@
+<%-include("admin-header")%>
+   <style>
+       .details{
+           width:30%;
+
+       }
+
+       .item-grid{
+           width: 70%;
+           grid-template-columns: repeat(3,1fr);
+       }
+
+       .items-card{
+           text-align: left;
+           width: 250px;
+           box-shadow: 2px 2px 10px;
+           
+       }
+
+       .items-card img{
+           max-width: 100%;
+           height:200px;
+       }
+
+       .info{
+           color:purple;
+           font-weight: 600;
+       }
+
+       li{
+           margin-bottom: 1.5rem;
+       }
+
+        @media(max-width:900px){
+        
+        .grid{
+            grid-template-columns: repeat(2,1fr);
+        }
+
+
+        }
+
+
+        @media(max-width:600px){
+            .grid{
+                grid-template-columns: repeat(1,1fr);
+            }
+
+            .single-container .flex-box{
+                flex-direction: column;
+            }
+        }
+   </style>
+  <div class="single-container flex-box">
+      <%if(one){%>
+        <div class="details">
+            <h1 class="sh-1">Order   <!-- ejs used to set delived to true or false -->
+                <%if(one.delivered){%>
+                    <li><span class="info"></span> <span class="btn btn-primary" style="background-color: green;">Delivered <i class="fa fa-check-circle"></i></span> </li>
+                <%}else{%>
+                    <li> <a href="/admin/delivered/<%=one._id%>"><button class="btn btn-primary">deliver</button></a> </li>
+                <%}%>
+</h1>
+            <ul>
+                <li><span class="info">Customer Name:</span> <%=one.customerName%></li> 
+                <li><span class="info">Address:</span>   <%=one.customerAddress%></li>
+                <li><span class="info">Phone No:</span>   <%=one.customerPhone%> </li>
+                 <li><span class="info">Price:</span>  #<%=one.price%></li>
+                 <li><span class="info">transaction ref:</span> <%=one.transactionRef%></li>
+                 <li><span class="info">transaction id:</span> <%=one.ransactionId%></li>
+                 <a href="/admin/delete-order/<%=one._id%>?_method=DELETE"><button class="btn btn-danger">delete order <i class="fa fa-trash"></i></button></a>
+                   
+                
+            </ul>
+        </div>
+        <%for(let i = 0; i < one.orderitems.length; i ++){%>
+            <!-- details to include delivered & must be deleteable-->
+            <div class="item-grid grid">
+                <div class="items-card">
+                    <img src="<%=orderitems[i].image%>" alt="<%=orderitems[i].name%>">
+                    <ul>
+                    <li><span class="info"> item: </span> <%=one.orderitems[i].name%></li> 
+                    <li><span class="info"> quantity: </span> <%=one.quantity[i]%></li>       
+                    </ul>
+                    
+                </div>
+        
+            </div>
+        <%}%>
+
+        
+        
+      <%}%>
+   
+  </div>
+ 
+<%-include("footer")%>
