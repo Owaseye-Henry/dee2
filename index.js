@@ -16,8 +16,17 @@ const methodOverride = require("method-override")
 app.use(methodOverride("_method"))
 
 //session setup
-const session = require("express-session")
-app.use(session({secret:'secret',resave:true,saveUninitialised:true}))
+const session = require("cookie-session")
+app.use(session({secret:'secret',
+resave:true,
+saveUninitialised:true,
+
+maxAge: 1000 * 60 * 15,
+cookie:{
+    secure: true
+       }
+
+}))
 const port = process.env.PORT||3000
 
 //set up public folder
