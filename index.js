@@ -57,7 +57,7 @@ const loggedout = (req,res,next)=>{
 }
 
 //dbconnection
-mongoose.connect("mongodb+srv://Owax:August20@database2.3hgrv.mongodb.net/?retryWrites=true&w=majority/dee")
+mongoose.connect("mongodb+srv://Owax:August20@database2.3hgrv.mongodb.net/dee?retryWrites=true&w=majority")
 .then(()=>console.log('database connected'))
 .catch((error)=>{console.log(`database connection error: ${error}`)})
 
