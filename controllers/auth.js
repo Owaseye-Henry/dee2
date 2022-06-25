@@ -185,7 +185,7 @@ router.get("/login",loggedout,async(req,res)=>{
 
 router.get("/login-admin123",loggedout,async(req,res)=>{
     try {
-        res.render('login',{url:'login-admin123',signup:"register123",message:""})
+        res.render('login',{url:'login-admin123',signup:"register-admin123",message:""})
     } catch (error) {
         console.log(error)
     }
@@ -228,7 +228,7 @@ router.post("/login-admin123",async(req,res)=>{
         {
             res.render('login',{url:'login-admin123',signup:"register123",message:"invalid username or password"})
         }
-        const passwordHash = bcrypt.compareSync(Password, user.Password)
+        const passwordHash = bcrypt.compareSync(Password, user.password)
         if(!passwordHash)
         {
             res.render('login',{url:'login-admin123',signup:"register123",message:"invalid username or password"})
@@ -243,7 +243,7 @@ router.post("/login-admin123",async(req,res)=>{
         }
 
     } catch (error) {
-        console.log(error)
+        console.log("admin login error" + error)
     }
 })
 router.get("/logout",async(req,res)=>{

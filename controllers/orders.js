@@ -114,11 +114,12 @@ router.get('/success',async(req,res)=>{
 
                 user.cart = [] //empty cart
                 user.quantity = [] // empty quantity
+                user.orders.push(order._id)
                 
                 await user.save()
 
       
-                res.render("success-page",{message:"transaction was successful", url:"/customers/dashboard-page"})
+                res.render("success",{message:"transaction was successful", url:"/customers/dashboard-page"})
                 
                 
             } else {
@@ -137,7 +138,7 @@ router.get('/success',async(req,res)=>{
 router.get('/get-single/:id',isAuth,async(req,res)=>{
 
   try {
-      const one = await orders.findById(req.params.id).populate('products')
+      const one = await orders.findById(req.params.id).populate('orderitems')
       res.render('get-single-order-client',{one})
       
   } catch (err) {

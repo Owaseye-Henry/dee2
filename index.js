@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const bcrypt = require('bcrypt')
 const mongoose = require("mongoose")
 app.use(bodyParser())
+app.use(bodyParser.json())
 
 //ejs setup
 const ejs = require("ejs")

@@ -32,6 +32,7 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/styles2.css">
+  
     <title>dee</title>
     <style>
         html{
@@ -61,27 +62,17 @@
             color: black;
         }
 
-        @media(max-width:600px){
-         header .flex-box {
-            flex-direction: column;
-            text-align: center;
-          }
-          header ul{
-             margin: auto;
-          }
-
-          header ul li{
-            padding-bottom: .8rem;
-          }
-        }
+        
         
     </style>
+
+<link rel="icon" type="image/x-icon" href="/images/DeeFashionIMG2.png">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="header flex-box">
-            <div class="logo">Tailor</div>
+              <div class="logo"> <span style=" font-size:2rem; color:white; font-family: sacramento,cursive;">D</span>ee Styling</div>
             <div class="nav">
                 <ul class="flex-box">
                     <li> <a href="/">Home</a> </li>
@@ -90,7 +81,7 @@
                     <li><a href="/#gallery">Gallery</a></li>
                     <li><a href="/customers/market-place">shop</a></li>
                     <li class="logout"></li>
-                    <li class="cartorlogin"><a href="/auth/login"><button class="btn btn-warning ">login</button></a></li>
+                    <li class="cartorlogin"><a href="/auth/logout"><button class="btn btn-warning ">logout</button></a></li>
                     
                 </ul>
 
@@ -98,29 +89,29 @@
         </div>
 
         <script>
-            document.addEventListener("DOMContentLoaded",()=>{
-                const logout = document.querySelector(".logout")
-                const cartButton = document.querySelector('.cart-button')
-                const cartorlogin = document.querySelector(".cartorlogin")
+            // document.addEventListener("DOMContentLoaded",()=>{
+            //     const logout = document.querySelector(".logout")
+            //     const cartButton = document.querySelector('.cart-button')
+            //     const cartorlogin = document.querySelector(".cartorlogin")
 
 
-                    fetch('http://localhost:3000/customers/dashboard')
-                    .then(res=>res.json())
-                    .then(data=>{
-                        let output = ""
-                        console.log(data)
+            //         fetch('http://localhost:3000/customers/dashboard')
+            //         .then(res=>res.json())
+            //         .then(data=>{
+            //             let output = ""
+            //             console.log(data)
             
-                        if(data.user){
-                            logout.innerHTML = `<a href="/auth/logout"><button class="btn btn-warning ">logout</button></a>`
-                            output += `<a href="/customers/dashboard-page"><button class="btn btn-warning ">cart <span class="cart-button" style="color:red;">${data.user.cart.length}</span></button></a>`
-                            cartorlogin.innerHTML = output
-                        }
+            //             if(data.user){
+            //                 logout.innerHTML = `<a href="/auth/logout"><button class="btn btn-warning ">logout</button></a>`
+            //                 output += `<a href="/customers/dashboard-page"><button class="btn btn-warning ">cart <span class="cart-button" style="color:red;">${data.user.cart.length}</span></button></a>`
+            //                 cartorlogin.innerHTML = output
+            //             }
                             
                         
                       
                        
-                    })
-                })
+            //         })
+            //     })
             
         </script>
         </header>

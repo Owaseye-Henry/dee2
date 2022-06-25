@@ -2,14 +2,14 @@
 
 <style>
     .items-card{
-           width: 200px;
+           width: 100%;
            height: fit-content;
            box-shadow: -1px 2px 5px  ;
        }
 
        .items-card img{
-           max-width: 100%;
-           height:200px;
+           width: 100%;
+           height:minmax(40px, 50%);
        }
 
        .info{
@@ -63,7 +63,7 @@
                                 <li><span class="info"><!--name-->Available quantity: </span><%=eachItem.quantity%></li>
                 
                                 <form action="/customers/cart-add/<%=eachItem._id%>" method="post">
-                    
+                                    
                                     <input type="number" name="quantity" id="quantity" placeholder="quantity">
                                     <br>
                                     <br>
@@ -94,7 +94,7 @@
 
     <script>
 
-        document.addEventListener("DOMContentLoaded",()=>{
+        
             
 
             
@@ -103,14 +103,47 @@
             const next = document.querySelector(".Next")
 
 
-            function fetcher(pagenumber){
-                fetch(`http://localhost:3000/customers/market?page=${pagenumber}`)
-                .then(res=>res.json())
-                .then(data =>{
-                    let output = ``
+            
+                
+
+                
+            
+            class Fetchers{
+                async getItems(url){
+                   
+                    try {
+                        
+                        let current = sessionStorage.getItem('current-page')
+                       let res= await fetch(url+'?page='+current )
+                       let data = await res.json()
+                       console.log(data)
+                       return data
+
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+
+                async postItems(url,message){
+                    let res = await fetch(url,{
+                        method: 'POST',
+                        headers:{"Content-Type":"application/json"},
+                        body:JSON.stringify({quantity:message})
+        
+                    }
+                    )
+                    let data = await res.json()
+        
                     console.log(data)
-                    data.forEach(one=>{
-                        output += `
+                    return(data)
+
+                }
+            }
+            class UI{
+                displayItems(items){
+                    let output =""
+                    items.forEach(one => { 
+                        output+=`
                             <div class="items-card">
                                 <a href="/customers/item/${one._id}">
                                 <img src="${one.image}" alt="item-image">
@@ -119,54 +152,115 @@
                                     <li><span class="info"><!--name--></span>${one.itemName}</li>
                                     <li><span class="info"><!--name-->price: </span> ${one.price} </li>
                                     <li><span class="info"><!--name--> </span>${one.AvailableQuantity} left</li>
+
                     
-                                    <form action="/customers/cart-add/${one._id}" method="post">
-                        
-                                        <input type="number" name="quantity" id="quantity" placeholder="how many?">
+                                    <form class="cart-form" action="/customers/cart-add/${one._id}" method="post">
+                                         
+                                        <input type="hidden" name="" class="id" value="${one._id}">
+                                        <input class="qty" type="number" name="quantity" id="quantity" placeholder="how many?">
                                         <br>
+                                        <p class="message" style="color:purple;"></p>
                                         <br>
-                                        <button type="submit" class="btn btn-warning">add to cart <i class="fa fa-shopping-cart"></i></button>
+                                        <button type="submit" class="btn btn-warning cart-add">add to cart <i class="fa fa-shopping-cart"></i></button>
                                     </form>              
                                     
                                 </ul>
                             </div>
                         `
+                        marketDiv.innerHTML = output
+                    });
+                }
 
-                            marketDiv.innerHTML = output
+                cartButtons(){
+                    const fetcher = new Fetchers()
+                    const cartForm = [...document.querySelectorAll(".cart-form")]
+                    
+                  
+                    cartForm.forEach(one =>{
+                        const qty = one.querySelector('.qty')
+                        const id = one.querySelector(".id").value
+                        const btn = one.querySelector(".cart-add")
+                        const message = one.querySelector(".message")
+                        
+
+
+                        one.addEventListener('submit',(e)=>{
+                            e.preventDefault();
+                            let quantity = qty.value
+                            console.log(btn)
+                            btn.disabled = true
+                            qty.value = ""
+                            btn.innerText = "in cart"
+                            fetcher.postItems(`/customers/cart-add/${id}`,quantity).then((data)=>{
+                                console.log(data)
                                 
+                                message.innerHTML = data;
+                                
+                            })
                             
-                            
+
+                        })
                     })
+                }
+            }
+
+            function loadDomContent(){
+                 // heading functionality
+                 const logout = document.querySelector(".logout")
+                const cartButton = document.querySelector('.cart-button')
+                const cartorlogin = document.querySelector(".cartorlogin")
+
+                fetch('http://localhost:3000/customers/dashboard')
+                    .then(res=>res.json())
+                    .then(data=>{
+                        let output = ""
+                        console.log(data)
+            
+                        if(data.user){
+                            logout.innerHTML = `<a href="/auth/logout"><button class="btn btn-warning ">logout</button></a>`
+                            output += `<a href="/customers/dashboard-page"><button class="btn btn-warning ">cart <span class="cart-button" style="color:red;">${data.user.cart.length}</span></button></a>`
+                            cartorlogin.innerHTML = output
+                        }
                             
-                })
-       
-       
-            }
-           
-            
-            let prv = 0;
-            let nxt = prv+2;
-        
-             console.log(nxt)
-            fetcher(1)
+                        
+                      
+                       
+                    })
 
-            prev.onclick=()=>{
-                prv--
-                nxt--
-                fetcher(prv)
-            }
-          
-            next.onclick=()=>{
-                prv++
-                nxt++
-                fetcher(nxt)
-            }
-          
 
-            
-          console.log(prv,nxt)
-            
-        })
+                const ui = new UI()
+                const fetcher = new Fetchers()
+
+                fetcher.getItems('/customers/market').then(data=>{
+                    ui.displayItems(data)
+                }).then(()=>{ui.cartButtons()})
+                
+
+            }
+
+            document.addEventListener("DOMContentLoaded",()=>{
+                
+                sessionStorage.setItem('current-page', 1)
+               
+                   loadDomContent()
+                   prev.addEventListener('click',()=>{
+                    let current = sessionStorage.getItem('current-page')
+                    if(current > 1)
+                        current --
+                        sessionStorage.setItem("current-page",current)
+                        loadDomContent()
+                   })
+                   next.addEventListener('click',()=>{
+                    let current = sessionStorage.getItem('current-page')
+                        current++
+                        sessionStorage.setItem("current-page",current)
+                        loadDomContent()
+                   })
+
+               
+
+            })
+       
     </script>
 <%-include('footer')%>
 

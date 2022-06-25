@@ -11,9 +11,7 @@
             
         }
 
-        .grid{
-            grid-template-columns: repeat(2,1fr);
-        }
+        
 
         .info,.details{
             margin:auto;
@@ -22,9 +20,7 @@
 
 
     @media(max-width:600px){
-        .grid{
-            grid-template-columns: repeat(1,1fr);
-        }
+        
       .name,.quantity{
           padding-left: .8rem;
       }
@@ -35,19 +31,19 @@
 <%if(one.orderitems){%>
     
         <div class="info">
-            <p class="date"><%=one.date%></p>
-            <p class="price"># <%=one.price%></p>
-            <p class="comments"><%=one.comments%>s</p>
-            <p class="t-ref">transaction ref <%=one.transactionRef%></p>
-            <p class="t-id">transaction ID <%=one.transactionId%></p>
+            <p class="date">date<%=one.date.substring(1,10)%></p>
+            <p class="price">total price:# <%=one.price%></p>
+            <p class="comments">comments: <%=one.comments%>s</p>
+            <p class="t-ref">transaction ref: <%=one.transactionRef%></p>
+            <p class="t-id">transaction ID: <%=one.transactionId%></p>
     
         </div>
         <div class="details grid">
         <%for(let i = 0 ; i < one.orderitems.length; i ++){%>
         
             <div class="card">
-              <img src="<%=one.orderitems[i].name%>" alt="items">
-              <p class="name"><%=one.orderitems[i].name%></p>
+              <img src="<%=one.orderitems[i].image%>" alt="items">
+              <p class="name"><%=one.orderitems[i].itemName%></p>
               <p class="quantity"><%=one.quantity[i]%> ordered</p>
             </div>
              

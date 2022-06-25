@@ -33,7 +33,7 @@ function loggedout (req,res,next){
 router.get("/admin",isAdmin,async(req,res)=>{
     const items = await product.find()
     const images = await gallery.find()
-    console.log(req.session.user)
+    console.log(req.session.admin)
  res.render("admin-page",{items,images})
 
 })
@@ -139,7 +139,8 @@ router.put("/editSingle/:id",isAdmin,async(req,res)=>{
 
 router.get("/get-orders",isAdmin,async(req,res)=>{
     try {
-        const allOrders = await orders.find()
+        const allOrders = await orders.find({}).populate("orderitems")
+        console.log(allOrders)
         res.render('view-orders-admin',{allOrders})
     } catch (error) {
         console.log(error)
@@ -149,7 +150,7 @@ router.get("/get-orders",isAdmin,async(req,res)=>{
 router.get('/get-one-order/:id',isAdmin,async(req,res)=>{
     
     try {
-        const one = await orders.findById(req.params.id).populate('products')
+        const one = await orders.findById(req.params.id).populate('orderitems')
         res.render('get-single-order',{one})
     } catch (err) {
         console.log(err)

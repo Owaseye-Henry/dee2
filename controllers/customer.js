@@ -39,34 +39,43 @@ function loggedout (req,res,next){
 
 
 router.get('/market',async(req,res)=>{
-   let page
-  if(req.query.page) page = req.query.page
-  else page = 1
-   
-   const limit = 10
-
-  const start = (page - 1) * limit
-  const stop = page * limit
-  const all = await items.find({})
-  allItems = all.slice(start,stop)
-  console.log(req.query.page)
+  try{
+    let page
+    if(req.query.page) page = req.query.page
+    else page = 1
+     
+     const limit = 10
   
-  res.send(allItems)
+    const start = (page - 1) * limit
+    const stop = page * limit
+    const all = await items.find({})
+    allItems = all.slice(start,stop)
+    console.log(req.query.page)
+    
+    res.send(allItems)
+  } catch(error){
+    console.log('market error ' + error)
+  }
  })
 
  router.get('/market-place',async(req,res)=>{
-  let page
- if(req.query.page) page = parseInt(req.query.page)
- else page = 1
-  
-  const limit = 10
-
- const start = (page - 1) * limit
- const stop = page * limit
- const all = await items.find({})
- allItems = all.slice(start,stop)
- 
- res.render('market-items',{allItems})
+  try {
+    
+    let page
+    if(req.query.page) page = parseInt(req.query.page)
+    else page = 1
+     
+     const limit = 10
+   
+    const start = (page - 1) * limit
+    const stop = page * limit
+    const all = await items.find({})
+    allItems = all.slice(start,stop)
+   
+    res.render('market-items',{allItems})
+  } catch (error) {
+    console.log("market error " + error)
+  }
  
 })
 
@@ -74,7 +83,7 @@ router.get('/market',async(req,res)=>{
 router.get('/dashboard',async(req,res)=>{
   try {
       //change to find by id
-     const one= await customers.findById(req.session.user._id).populate([{path:"cart",model:["item"]},{path:"orders",model:"order"}])
+     const one= await customers.findById(req.session.user._id).populate([{path:"cart",model:["item"]},{path:"orders",model:["order"]}])
      const user = one
 
      res.send({user})
@@ -110,6 +119,7 @@ router.post('/cart-add/:id',isAuth,async(req,res)=>{
         const user = await customers.findById(req.session.user._id)
         const item = await items.findById(req.params.id)
 
+        console.log(req.body.quantity); console.log(': body')
          if(!isPresent(item._id,user.cart)){
             let quantity = req.body.quantity
             if(quantity < 1) quantity = 1
@@ -122,10 +132,10 @@ router.post('/cart-add/:id',isAuth,async(req,res)=>{
                 await user.save()
                 res.redirect("/customers/market-place")
             } else{
-                res.send("<h1>order more than available quanitity</h1>")
+                res.json("the order more than available quanitity")
             }
          }else{
-             res.send('<h1>item already in cart</h1>')
+             res.json("item already in cart")
            }
 
            

@@ -1,25 +1,18 @@
 <%-include('admin-header')%>
 <style>
-    .card img{
+    .item-card img{
         width: 100%;
-        max-height: 200px;
-        object-fit: cover;
-    }
-    @media(max-width:900px){
+        height: 40%;
     
-    .grid{
-        grid-template-columns: repeat(2,1fr);
+    }
+    .item-card{
+        max-height: fit-content;
+        border:1px solid rgb(243, 237, 237);
+        border-radius: 5px;
+        
     }
 
 
- }
-
-
-@media(max-width:600px){
-    .grid{
-        grid-template-columns: repeat(1,1fr);
-    }
-}
 </style>
 <h1 class="sh-1">Admin Page</h1>
 
@@ -29,7 +22,7 @@
         <input type="text" class="form-control" name="name" placeholder="enter product name">
         <input type="number" class="form-control" name="price" placeholder="price">
         <input type="file" class="form-control" name="image">
-        <input type="number" class="form-control" name="quantity" placeholder="quantity in mumbers">
+        <input type="number" class="form-control" name="quantity" placeholder="quantity in numbers">
         <textarea name="description" class="form-control" cols="30" rows="10">enter description</textarea>
 
         <button type="submit" class="btn btn-primary form-control" >Add to Store</button>
@@ -42,7 +35,7 @@
     <input type="text" name="name" class="form-control" placeholder="image name">
     <input type="text" class="form-control" name="description" placeholder="message (8 words max)">
     <input type="file" name="image" class="form-control" placeholder="image">
-    <button type="submit" class="btn btn-primary form-control" >Add to Store</button>
+    <button type="submit" class="btn btn-primary form-control" >Add to gallery</button>
 
  </form>
 </div>
@@ -53,7 +46,7 @@
         <%if(items){%>
             <%items.forEach((item)=>{%>
                 
-        <div class="card">
+        <div class="item-card">
             <div>
                 <img src="<%=item.image%>" alt="<%=item.image%>">
                 <ul>
@@ -62,40 +55,42 @@
                     <li class="description">description: <%=item.description%></li>
                     <li class="quantity"> quantity: <%=item.AvailableQuantity%></li>
                 </ul>
+                <!-- edit button to connect to edit one  -->
+                <a href="/admin/editSingle/<%=item._id%>"><button class="btn btn-warning">edit <i class="fa fa-edit"></i></button></a> 
+
+                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">delete <i class="fa fa-trash"></i></button>
                 
             </div>
             <div>
-                <!-- edit button to connect to edit one  -->
-            <a href="/admin/editSingle/<%=item._id%>"><button class="btn btn-warning">edit <i class="fa fa-edit"></i></button></a> 
-
-                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">delete <i class="fa fa-trash"></i></button>
+                
+           
 
                 <!--delete modal -->
                 <!-- Button trigger modal -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                <h1>Are you sure you want to <span style="color: red;">delete</span>?</h1>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form action="/admin/deleteSingle/<%=item._id%>?_method=DELETE" method="post" >
-                    <button type="submit" class="btn btn-danger">delete</button>
-                </form>
-                
-                </div>
-            </div>
-            </div>
-        </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            <h1>Are you sure you want to <span style="color: red;">delete</span>?</h1>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <form action="/admin/deleteSingle/<%=item._id%>?_method=DELETE" method="post" >
+                                <button type="submit" class="btn btn-danger">delete</button>
+                            </form>
+                            
+                            </div>
+                        </div>
+                        </div>
+                    </div>
             </div>
         </div>
             <%})%>

@@ -4,7 +4,15 @@ const fromRight = document.querySelectorAll('.from-right')
 const fromLeft = document.querySelectorAll('.from-left')
 const visible = document.querySelector(".visible")
 const servicesPics = document.querySelectorAll(".col-lg-4")
+const aboutText = document.querySelector('.about-text')
 
+console.log(screen.width)
+if (screen.width < 900)
+{
+    aboutText.style.opacity = 1;
+    aboutText.classList.remove("from-right")
+
+}
 const servicesFromRight = document.querySelectorAll(".col-lg-4:nth-child(odd)")
 const servicesFromLeft = document.querySelectorAll(".col-lg-4:nth-child(even)")
 
@@ -21,7 +29,7 @@ servicesFromRight.forEach((one)=>{
 
 
 let options = {
-    threshold:.5
+    threshold:.3
 }
 const homeObserver = new IntersectionObserver((entries,observer)=>{
     entries.forEach((entry)=>{

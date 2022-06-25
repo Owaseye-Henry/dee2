@@ -1,21 +1,17 @@
-<%-include("header")%>
+<%-include("market-header")%>
   <style>
       img{
           width: 500px;
           height:500px ;
           
       }
+      
+   
       .grid{
           display: grid;
           grid-template-columns: repeat(2,1fr);
       }
-      @media(max-width:900px){
-        .flex-box{
-          flex-wrap: wrap;
-      }
-
-    
-      }
+     
       .sh-2{
           color: purple;
         }
@@ -27,6 +23,17 @@
           text-align: left;
           width: 100%;
           
+      }
+      @media(max-width:750px){
+        .wrapper{
+            flex-direction: column;
+        }
+        .image{
+            width:100%
+        }
+        .details{
+            width:100%
+        }
       }
   </style>
  <div class="wrapper flex-box">

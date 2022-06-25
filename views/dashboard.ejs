@@ -53,12 +53,7 @@
 
     <!-- Ajax -->
     </div>
-    <nav class="pagination-wrapper">
-        <ul class="pagination">
-            <li class="page-item"><i class="page-link Previous-cart">Previous</i></li>
-            <li class="page-item"><i class="page-link Next-cart" >Next</i></li>
-          </ul>
-        </nav>
+    
 </div>
 
 <h1 class="sh-1">My Orders</h1>
@@ -69,13 +64,7 @@
        
    
     </div>
-    <nav class="pagination-wrapper">
-        <ul class="pagination">
-            <li class="page-item"><i class="page-link Previous-order">Previous</i></li>
-            <li class="page-item"><i class="page-link Next-order" >Next</i></li>
-          </ul>
-        </nav>
-
+    
 </div>
 
     
@@ -141,14 +130,14 @@
                 .then(data =>{
                     let output1 = ``
                     let output2 = ``
-                    
+                     console.log(data)
                     
                     for(let i = 0; i < data.user.orders.length; i ++ ){
-                        output2 += `<a href="/orders/get-single/${data.userorder[i]._id}">
+                        output2 += `<a href="/orders/get-single/${data.user.orders[i]._id}">
                         <div class="card">
-                            <p class="date">${data.user.orders[i].date}</p>
-                            <p class="price">${data.user.orders[i].price}</p>
-                            <p class="comments">${data.user.orders[i].comments}</p>
+                            <p class="date">date ${data.user.orders[i].date}</p>
+                            <p class="price"> price #${data.user.orders[i].price}</p>
+                            <p class="comments">comments ${data.user.orders[i].comments}</p>
                         </div>
                     </a> `
                     }
