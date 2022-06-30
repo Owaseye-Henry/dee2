@@ -34,6 +34,7 @@ router.get("/admin",isAdmin,async(req,res)=>{
     const items = await product.find()
     const images = await gallery.find()
     console.log(req.session.admin)
+    
  res.render("admin-page",{items,images})
 
 })
@@ -45,7 +46,9 @@ router.post("/create-product",isAdmin,formidable(), async(req,res)=>{
         const date = new Date().toString()
         const newPath = path.resolve(__dirname,'..//public/media/'+ req.files.image.name)
             if(!fs.existsSync(newPath)){
-                fs.renameSync(oldPath,newPath)
+                // fs.renameSync(oldPath,newPath)
+                let oldInfo = fs.readFileSync(oldPath)
+                fs.writeFileSync(newPath,oldInfo)
     
         
             const newProduct = new product({
@@ -77,8 +80,9 @@ router.post("/gallery",isAdmin,formidable(), async(req,res)=>{
         const oldPath =  req.files.image.path
         const newPath = path.resolve(__dirname,'..//public/gallery/'+ req.files.image.name)
             if(!fs.existsSync(newPath)){
-                fs.renameSync(oldPath,newPath)
-    
+                //fs.renameSync(oldPath,newPath)
+                let oldInfo = fs.readFileSync(oldPath)
+                fs.writeFileSync(newPath,oldInfo)
         
             const newPicture = new gallery({image,name,description})
             await newPicture.save()

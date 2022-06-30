@@ -177,7 +177,7 @@ router.put("/edit-admin123/:id",isAdmin,async(req,res)=>{
 
 router.get("/login",loggedout,async(req,res)=>{
     try {
-        res.render('login',{url:'login',signup:"register",message:""})
+        res.render('login',{url:'/auth/login',signup:"register",message:""})
     } catch (error) {
         console.log(error)
     }
@@ -185,7 +185,7 @@ router.get("/login",loggedout,async(req,res)=>{
 
 router.get("/login-admin123",loggedout,async(req,res)=>{
     try {
-        res.render('login',{url:'login-admin123',signup:"register-admin123",message:""})
+        res.render('login',{url:'/auth/login-admin123',signup:"register-admin123",message:""})
     } catch (error) {
         console.log(error)
     }
@@ -197,21 +197,24 @@ router.post("/login",async(req,res)=>{
         const user = await users.findOne({username:Username})
         console.log(user)
     
+    
         if(!user)
         {
-            res.render('login',{url:'login',signup:"register",message:"invalid username or password"})
+            res.render('login',{url:'/auth/login',signup:"register",message:"invalid username or password"})
         }
         const passwordHash = bcrypt.compareSync(Password, user.password)
         if(!passwordHash)
         {
-            res.render('login',{url:'login',signup:"register",message:"invalid username or password"})
+            res.render('login',{url:'/auth/login',signup:"register",message:"invalid username or password"})
         }
         else{
             req.session.user = user;
             req.session.save(function (err) {
                 if (err) return next(err)
-                res.redirect('/customers/market-place')
+                
               })
+
+              res.redirect('/customers/market-place')
         }
 
     } catch (error) {
@@ -226,20 +229,22 @@ router.post("/login-admin123",async(req,res)=>{
     
         if(!user)
         {
-            res.render('login',{url:'login-admin123',signup:"register123",message:"invalid username or password"})
+            res.render('login',{url:'/auth/login-admin123',signup:"register-admin123",message:"invalid username or password"})
         }
         const passwordHash = bcrypt.compareSync(Password, user.password)
         if(!passwordHash)
         {
-            res.render('login',{url:'login-admin123',signup:"register123",message:"invalid username or password"})
+            res.render('login',{url:'/auth/login-admin123',signup:"register-admin123",message:"invalid username or password"})
         }
         else{
             req.session.user = user;
             req.session.admin = user
             req.session.save(function (err) {
                 if (err) return next(err)
-                res.redirect('/admin/admin')
+            
               })
+
+              res.redirect('/admin/admin')
         }
 
     } catch (error) {
@@ -251,11 +256,7 @@ router.get("/logout",async(req,res)=>{
         req.session.user = null;
         req.session.save((err)=>{if(err) next(err)
         })
-
-        req.session.regenerate((err)=>{
-            if(err) next(err)
-            res.redirect('/')
-        })
+        res.redirect('/')
     } catch (error) {
         console.log(error)
     }
@@ -268,10 +269,7 @@ router.get("/logout-admin123",async(req,res)=>{
         req.session.save((err)=>{if(err) next(err)
         })
 
-        req.session.regenerate((err)=>{
-            if(err) next(err)
-            res.redirect('/')
-        })
+        res.redirect('/')
     } catch (error) {
         console.log(error)
     }
